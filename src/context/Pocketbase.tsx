@@ -22,7 +22,7 @@ export type PocketbaseProviderProps = {
 
 export const Pocketbase = (props: PocketbaseProviderProps) => {
   const [client, setClient] = React.useState<PocketBase | null>(null);
-  const [initialCollections, setInitialCollections] = React.useState<string[]>();
+  const [initialCollections, setInitialCollections] = React.useState<string[]>(props.initialCollections ?? []);
   useEffect(() => {
     const client = new PocketBase(props.serverURL);
     client.authStore.onChange(async () => {
