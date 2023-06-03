@@ -15,6 +15,7 @@ export type AuthProviderInfo = {
 
 export type RegisterWithEmailType = (email: string, password: string) => Promise<void>;
 export type SignInWithEmailType = (email: string, password: string) => Promise<void>;
+export type SignInWithEmailAdminType = (email: string, password: string) => Promise<void>;
 export type SignInWithProviderType = (provider: string) => Promise<void>;
 export type SubmitProviderResultType = (url: string) => Promise<void>;
 export type SignOutType = () => void;
@@ -27,6 +28,7 @@ export type DeleteUserType = (id: string) => Promise<void>;
 export interface AuthActions {
   registerWithEmail: RegisterWithEmailType;
   signInWithEmail: SignInWithEmailType;
+  signInWithEmailAdmin: SignInWithEmailAdminType;
   signInWithProvider: SignInWithProviderType;
   submitProviderResult: SubmitProviderResultType;
   signOut: SignOutType;
@@ -60,6 +62,11 @@ export const AuthProvider = (props: AuthProviderProps) => {
     },
     signInWithEmail: async (email: string, password: string) => {
       await client?.collection('users').authWithPassword(email, password);
+    },
+    signInWithEmailAdmin: async (email: string, password: string) => {
+      console.log('pbr signInWithEmailAdmin begin');
+      const res = await client?.admins.authWithPassword(email, password);
+      console.log('pbr signInWithEmailAdmin', res);
     },
     signInWithProvider: async (provider: string) => {
       const authProvider = authProviders?.find((p) => p.name === provider);
